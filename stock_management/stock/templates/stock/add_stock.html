@@ -1,0 +1,138 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Add Stock | StockWise</title>
+    <link rel="stylesheet" href="{% static 'css/add_stock.css' %}">
+    <script>
+        // Save input values to local storage
+        function saveInput() {
+            const name = document.getElementById("name").value;
+            const quantity = document.getElementById("quantity").value;
+            const price = document.getElementById("price").value;
+            const category = document.getElementById("category").value;
+
+            localStorage.setItem("stockName", name);
+            localStorage.setItem("stockQuantity", quantity);
+            localStorage.setItem("stockPrice", price);
+            localStorage.setItem("stockCategory", category);
+        }
+
+        // Load input values from local storage
+        function loadInput() {
+            // Clear form inputs when the page is loaded
+            document.getElementById("name").value = "";
+            document.getElementById("quantity").value = "";
+            document.getElementById("price").value = "";
+            document.getElementById("category").value = "";
+        }
+
+        // Validate the form
+        function validateForm() {
+            const name = document.getElementById("name").value;
+            const quantity = document.getElementById("quantity").value;
+            const price = document.getElementById("price").value;
+
+            if (name === "" || quantity === "" || price === "") {
+                alert("All fields must be filled out.");
+                return false;
+            }
+            if (quantity <= 0) {
+                alert("Quantity must be greater than zero.");
+                return false;
+            }
+            if (price <= 0) {
+                alert("Price must be greater than zero.");
+                return false;
+            }
+            return confirm("Are you sure you want to add this stock?");
+        }
+
+        // Preview stock details
+        function previewDetails() {
+            const name = document.getElementById("name").value;
+            const quantity = document.getElementById("quantity").value;
+            const price = document.getElementById("price").value;
+            const category = document.getElementById("category").value;
+
+            const preview = document.getElementById("preview");
+            preview.innerHTML = `
+                <strong>Stock Details Preview:</strong><br>
+                <strong>Name:</strong> ${name}<br>
+                <strong>Quantity:</strong> ${quantity}<br>
+                <strong>Price:</strong> $${price}<br>
+                <strong>Category:</strong> ${category}
+            `;
+        }
+
+        // Clear local storage and form
+        function resetForm() {
+            localStorage.removeItem("stockName");
+            localStorage.removeItem("stockQuantity");
+            localStorage.removeItem("stockPrice");
+            localStorage.removeItem("stockCategory");
+            document.getElementById("add-stock-form").reset();
+            document.getElementById("preview").innerHTML = "";
+        }
+
+        window.onload = loadInput;  // Load inputs on page load
+    </script>
+</head>
+<body>
+    <h1>Add New Stock</h1>
+    <form id="add-stock-form" method="POST" action="{% url 'add_stock' %}" onsubmit="return validateForm()">
+        {% csrf_token %}
+
+        <!-- Stock Name with error display -->
+        <div class="tooltip">
+            <label for="name">Stock Name:</label>
+            <span class="tooltiptext">Enter the stock name (e.g., Apple Inc.)</span>
+        </div>
+        <input type="text" id="name" name="name" placeholder="Stock name" value="{{ form.name.value }}" required>
+        <!-- Display errors for the name field -->
+        {% if form.name.errors %}
+            <div class="error-message">
+                {% for error in form.name.errors %}
+                    <p>{{ error }}</p>
+                {% endfor %}
+            </div>
+        {% endif %}
+
+        <!-- Quantity with error display -->
+        <div class="tooltip">
+            <label for="quantity">Quantity:</label>
+            <span class="tooltiptext">Enter the number of units in stock.</span>
+        </div>
+        <input type="number" id="quantity" name="quantity" placeholder="Quantity" min="1" value="{{ form.quantity.value }}" required>
+
+        <!-- Price with error display -->
+        <div class="tooltip">
+            <label for="price">Price (per unit):</label>
+            <span class="tooltiptext">Enter the price in dollars (e.g., 12.50).</span>
+        </div>
+        <input type="number" id="price" name="price" step="0.01" placeholder="Price" min="0.01" value="{{ form.price.value }}" required>
+
+        <!-- Category with error display -->
+        <div class="tooltip">
+            <label for="category">Category:</label>
+            <span class="tooltiptext">Select a category for the stock.</span>
+        </div>
+        <select id="category" name="category" required>
+            <option value="" disabled selected>Select Category</option>
+            <option value="Electronics" {% if form.category.value == "Electronics" %}selected{% endif %}>Electronics</option>
+            <option value="Clothing" {% if form.category.value == "Clothing" %}selected{% endif %}>Clothing</option>
+            <option value="Groceries" {% if form.category.value == "Groceries" %}selected{% endif %}>Groceries</option>
+            <option value="Home" {% if form.category.value == "Home" %}selected{% endif %}>Home</option>
+            <option value="Other" {% if form.category.value == "Other" %}selected{% endif %}>Other</option>
+        </select>
+
+        <button type="submit" onclick="saveInput()">Add Stock</button>
+        <button type="button" onclick="resetForm()">Reset Form</button>
+        <button type="button" onclick="previewDetails()">Preview</button>
+    </form>
+
+    <div id="preview"></div>
+</body>
+</html>

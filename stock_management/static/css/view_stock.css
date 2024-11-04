@@ -1,0 +1,126 @@
+/* General Reset */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+/* Body and Container Styles */
+body {
+    font-family: 'Poppins', sans-serif; /* Matching font */
+    background-color: #f0f4f8; /* Match dashboard background */
+    color: #333;
+    line-height: 1.6;
+    padding: 20px;
+}
+
+.container {
+    max-width: 1200px; /* Match dashboard container width */
+    margin: auto;
+    padding: 20px; /* Match dashboard padding */
+    transition: all 0.3s ease-in-out;
+}
+
+/* Title Styles */
+h1 {
+    text-align: center;
+    color: #2c3e50; /* Dark blue color for the title */
+    font-size: 2.5rem; /* Larger title */
+    margin-bottom: 30px;
+    text-transform: uppercase; /* Uppercase for a more formal look */
+    letter-spacing: 1px; /* Slightly increased letter spacing */
+    position: relative;
+}
+
+h1::after {
+    content: "";
+    display: block;
+    height: 4px; /* Underline effect */
+    width: 60%; /* Width of the underline */
+    background: #3E5B99; /* Change color to match dashboard */
+    margin: 10px auto; /* Centered underline */
+}
+
+/* Category Styles */
+.category {
+    font-size: 1.8em; /* Increased size for categories */
+    color: #2b2b2b; /* Darker color for category headings */
+    margin: 20px 0 10px;
+    text-align: center;
+}
+
+/* Table Styles */
+table {
+    width: 80%;
+    margin: 20px auto;
+    border-collapse: collapse;
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.1); /* Stronger shadow for depth */
+    background-color: #ffffff; /* Bright white for table background */
+    border-radius: 10px; /* Match rounded corners */
+    overflow: hidden; /* Rounded corners for the table */
+}
+
+th, td {
+    padding: 15px; /* Slightly increased padding */
+    text-align: left;
+    border: 1px solid #ddd;
+}
+
+/* Header Styles */
+th {
+    background-color: #3E5B99; /* Change to match the dashboard */
+    color: white;
+    font-weight: bold; /* Bold text for headers */
+}
+
+/* Row Hover Effect */
+tr:hover {
+    background-color: #f9f9f9; /* Light grey hover effect */
+}
+
+/* Button Styles */
+.button {
+    padding: 12px 24px; /* Increased padding for buttons */
+    margin: 10px;
+    border: none;
+    border-radius: 8px; /* Match dashboard button radius */
+    background-color: #3E5B99; /* Change to match the dashboard */
+    color: white;
+    cursor: pointer;
+    transition: background-color 0.3s, transform 0.2s; /* Added transform for button press effect */
+}
+
+.button:hover {
+    background-color: #2A3C6D; /* Darker shade on hover */
+    transform: scale(1.05); /* Slightly enlarge button on hover */
+}
+
+/* Back Button Styles */
+.back-button {
+    display: block;
+    width: 220px; /* Slightly wider back button */
+    margin: 20px auto;
+    text-align: center;
+    font-size: 1.2em; /* Increased font size */
+    font-weight: bold; /* Bold text for emphasis */
+    text-decoration: none; /* Remove underline for cleaner look */
+    background-color: #3E5B99; /* Change to match the dashboard */
+    color: white; /* White text for better contrast */
+    border-radius: 8px; /* Match dashboard button radius */
+    padding: 12px; /* Add padding for comfort */
+}
+
+.back-button:hover {
+    background-color: #2A3C6D; /* Darker shade on hover */
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    h1 {
+        font-size: 2rem; /* Adjust title size on smaller screens */
+    }
+
+    table {
+        width: 90%; /* Responsive table width */
+    }
+}

@@ -1,0 +1,162 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>View Users | StockWise</title>
+    <link rel="stylesheet" href="{% static 'css/styles.css' %}">
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+</head>
+<body>
+    <h1>Users List</h1>
+    <p>Manage users in the system from this page.</p>
+    
+    <!-- Search functionality -->
+    <form method="GET" action="">
+        <input type="text" name="q" placeholder="Search by username or email">
+        <button type="submit">Search</button>
+    </form>
+
+    <!-- Users table -->
+    <table>
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Username</th>
+                <th>Email</th>
+                <th>Actions</th> <!-- Action column for admin functionalities -->
+            </tr>
+        </thead>
+        <tbody>
+            {% for user in users %}
+            <tr>
+                <td>{{ user.id }}</td>
+                <td>{{ user.username }}</td>
+                <td>{{ user.email }}</td>
+                <td>
+                    <!-- Buttons for Edit and Delete modals -->
+                    <button class="btn btn-edit" data-id="{{ user.id }}" data-username="{{ user.username }}" data-email="{{ user.email }}">Edit</button>
+                    <button class="btn btn-delete" data-id="{{ user.id }}" data-username="{{ user.username }}">Delete</button>
+                </td>
+            </tr>
+            {% empty %}
+            <tr>
+                <td colspan="4">No users found.</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
+    <!-- Edit User Modal -->
+    <div id="editUserModal" class="modal">
+        <div class="modal-content">
+            <h2>Edit User</h2>
+            <form id="editUserForm" method="POST" action="{% url 'edit_user' %}">
+                {% csrf_token %}
+                <input type="hidden" id="editUserId" name="user_id">
+                <label for="editUsername">Username:</label>
+                <input type="text" id="editUsername" name="username">
+                <label for="editEmail">Email:</label>
+                <input type="email" id="editEmail" name="email">
+                <button type="submit" class="btn btn-primary">Save Changes</button>
+                <button type="button" class="btn btn-secondary" onclick="closeModal('editUserModal')">Cancel</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Delete User Modal -->
+    <div id="deleteUserModal" class="modal">
+        <div class="modal-content">
+            <h2>Delete User</h2>
+            <p>Are you sure you want to delete <span id="deleteUsername"></span>?</p>
+            <form id="deleteUserForm" method="POST" action="{% url 'delete_user' %}">
+                {% csrf_token %}
+                <input type="hidden" id="deleteUserId" name="user_id">
+                <button type="submit" class="btn btn-danger">Delete</button>
+                <button type="button" class="btn btn-secondary" onclick="closeModal('deleteUserModal')">Cancel</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Custom JavaScript to handle modals -->
+    <script>
+        // Open edit modal and populate fields
+        $('.btn-edit').on('click', function() {
+            var userId = $(this).data('id');
+            var username = $(this).data('username');
+            var email = $(this).data('email');
+
+            $('#editUserId').val(userId);
+            $('#editUsername').val(username);
+            $('#editEmail').val(email);
+
+            openModal('editUserModal');
+        });
+
+        // Open delete modal and populate fields
+        $('.btn-delete').on('click', function() {
+            var userId = $(this).data('id');
+            var username = $(this).data('username');
+
+            $('#deleteUserId').val(userId);
+            $('#deleteUsername').text(username);
+
+            openModal('deleteUserModal');
+        });
+
+        // Open modal function
+        function openModal(modalId) {
+            $('#' + modalId).css('display', 'block');
+        }
+
+        // Close modal function
+        function closeModal(modalId) {
+            $('#' + modalId).css('display', 'none');
+        }
+    </script>
+
+    <!-- Add some CSS for modals (you can add this in your CSS file) -->
+    <style>
+        .modal {
+            display: none; /* Hidden by default */
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+            justify-content: center;
+            align-items: center;
+        }
+        .modal-content {
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 8px;
+            width: 300px;
+            text-align: center;
+        }
+        .modal h2 {
+            margin-top: 0;
+        }
+        .btn {
+            cursor: pointer;
+            margin: 5px;
+            padding: 10px 20px;
+            background-color: #007BFF;
+            color: #fff;
+            border: none;
+            border-radius: 5px;
+        }
+        .btn-danger {
+            background-color: #dc3545;
+        }
+        .btn-secondary {
+            background-color: #6c757d;
+        }
+        .btn:hover {
+            opacity: 0.9;
+        }
+    </style>
+</body>
+</html>

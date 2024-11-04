@@ -1,0 +1,6 @@
+Contact Us Message from Stockwise
+
+Name: {{ name }}
+Email: {{ email }}
+Message:
+{{ message }}

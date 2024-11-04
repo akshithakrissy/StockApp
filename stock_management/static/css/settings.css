@@ -1,0 +1,94 @@
+/* General body styling */
+body {
+    margin: 0;
+    font-family: 'Arial', sans-serif;
+    background-color: #f0f4f8; /* Light background */
+}
+
+/* Header styling */
+.settings-header {
+    text-align: center;
+    padding: 20px;
+    background-color: #6C9BCF; /* Soft Blue */
+    color: white;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+    margin-bottom: 20px;
+}
+
+/* Settings container styling */
+.settings-container {
+    max-width: 500px;
+    margin: 0 auto;
+    background-color: white; /* White background for the form */
+    padding: 20px;
+    border-radius: 12px;
+    box-shadow: 0 8px 15px rgba(0, 0, 0, 0.1);
+}
+
+/* Form group styling */
+.form-group {
+    margin-bottom: 15px;
+}
+
+/* Label styling */
+label {
+    display: flex;
+    align-items: center; /* Align icons and text */
+    margin-bottom: 5px;
+    font-weight: bold;
+}
+
+/* Input field styling */
+input[type="text"],
+input[type="email"],
+input[type="password"] {
+    width: 100%; /* Full width */
+    padding: 10px;
+    border: 1px solid #6C9BCF; /* Border color */
+    border-radius: 5px;
+    transition: border-color 0.3s;
+}
+
+input[type="text"]:focus,
+input[type="email"]:focus,
+input[type="password"]:focus {
+    border-color: #5A8BCF; /* Darker border on focus */
+    outline: none; /* Remove default outline */
+}
+
+/* Button styling */
+.btn {
+    background-color: #6C9BCF; /* Soft blue for buttons */
+    color: white;
+    border: none;
+    border-radius: 8px;
+    padding: 12px;
+    font-size: 16px;
+    cursor: pointer;
+    width: 100%; /* Full width button */
+    transition: background-color 0.3s, transform 0.2s;
+}
+
+.btn:hover {
+    background-color: #5A8BCF; /* Darker blue on hover */
+    transform: translateY(-2px); /* Lift effect */
+}
+
+/* Success message styling */
+.success-message {
+    margin-top: 15px;
+    color: #28a745; /* Green color for success messages */
+    font-weight: bold;
+}
+
+/* Responsive adjustments */
+@media (max-width: 600px) {
+    .settings-container {
+        padding: 15px;
+    }
+
+    .btn {
+        padding: 10px;
+        font-size: 14px;
+    }
+}

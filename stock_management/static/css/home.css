@@ -1,0 +1,134 @@
+/* Global Styles */
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+    background-image: url("{% static 'images/background.jpeg' %}");
+    background-size: cover; /* Ensures the image covers the entire background */
+    background-position: center; /* Centers the background image */
+    background-repeat: no-repeat; /* Ensures the image does not repeat */
+    background-attachment: fixed; /* Makes the background image fixed on scroll */
+}
+
+/* Header Styles */
+header {
+    background-color: #1a1a1a;
+    color: rgb(255, 254, 254);
+    padding: 10px 20px;
+    display: flex;
+    justify-content:end;
+    align-items:center;
+    position: sticky;              /* Sticky navigation */
+    top: 0;
+    z-index: 1000;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);  /* Shadow under the header */
+}
+
+/* Logo and Project Name */
+.logo-container {
+    display: flex;
+    align-items: center;
+}
+
+.logo {
+    width: 40px;
+    height: 40px;
+    margin-right: 10px;
+}
+
+.project-name {
+    font-size: 1.5rem;
+    font-weight: bold;
+    font-family: 'Georgia', serif; 
+}
+
+/* Navigation Styles */
+.nav-list {
+    list-style: none;
+    display: flex;
+    margin: 10;
+    justify-content:right;
+}
+
+.nav-link {
+    color: white;
+    text-decoration: none;
+    margin:15px;
+    padding:10px 20px;
+    font-size: 18px;
+    transition: color 0.3s ease, text-shadow 0.3s ease;
+    font-family: 'Georgia', serif; 
+}
+
+.nav-link:hover {
+    color: #00aced;
+    text-shadow: 0 0 5px rgba(0, 172, 237, 0.8); /* Glow effect on hover */
+}
+
+/* Main Content Styles */
+.home-container {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    padding: 50px 20px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);  /* Subtle shadow around the container */
+}
+
+/* Title and Text Styles */
+.welcome-title {
+    font-size: 3rem;
+    color: #333;
+    text-align: center;
+    margin-bottom: 20px;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);  /* Text shadow for depth */
+}
+
+.welcome-text {
+    font-size: 1.5rem;
+    color: #1f1b1b;
+    text-align: center;
+    margin-bottom: 30px;
+}
+
+/* Footer Styles */
+footer {
+    background-color: #333;
+    color: white;
+    text-align: center;
+    padding: 15px;
+    font-size: 14px;
+}
+
+.footer-link {
+    color: #00aced;
+    text-decoration: none;
+}
+
+.footer-link:hover {
+    text-decoration: underline;
+}
+
+/* Responsive Styles */
+@media (max-width: 768px) {
+    .nav-list {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    .nav-link {
+        margin: 10px 0;
+    }
+
+    .welcome-title {
+        font-size: 2rem;
+    }
+
+    .welcome-text {
+        font-size: 1.25rem;
+    }
+}

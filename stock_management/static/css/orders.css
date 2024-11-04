@@ -1,0 +1,148 @@
+/* house.css */
+
+body {
+    font-family: 'Arial', sans-serif;
+    background: linear-gradient(to bottom right, #1f1c2c, #928dab);
+    color: #fff;
+    margin: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 100vh;
+}
+
+.container {
+    width: 80%;
+    max-width: 1200px;
+    background-color: rgba(255, 255, 255, 0.1);
+    padding: 20px 40px;
+    border-radius: 12px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+    backdrop-filter: blur(10px);
+}
+
+h1 {
+    text-align: center;
+    font-size: 2.5em;
+    font-weight: bold;
+    margin-bottom: 20px;
+    color: #ffddc1;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    background-color: rgba(255, 255, 255, 0.1);
+    border-radius: 8px;
+    overflow: hidden;
+    margin-top: 20px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+}
+
+thead th {
+    font-weight: 600;
+    padding: 12px;
+    background-color: #33334d;
+    color: #ffddc1;
+}
+
+tbody tr:nth-child(even) {
+    background-color: rgba(255, 255, 255, 0.1);
+}
+
+tbody td {
+    padding: 12px;
+    text-align: center;
+    color: #e6e6fa;
+}
+
+.buy-btn {
+    background: linear-gradient(145deg, #ff7e5f, #feb47b);
+    color: white;
+    font-weight: bold;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.buy-btn:hover {
+    background: linear-gradient(145deg, #feb47b, #ff7e5f);
+    transform: scale(1.05);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+}
+
+.back-btn {
+    display: block;
+    text-align: center;
+    margin: 20px auto;
+    padding: 10px 20px;
+    width: fit-content;
+    color: #ffddc1;
+    border: 1px solid #ffddc1;
+    border-radius: 8px;
+    transition: 0.3s;
+    text-decoration: none;
+    font-weight: bold;
+}
+
+.back-btn:hover {
+    background-color: #ffddc1;
+    color: #1f1c2c;
+}
+
+.modal {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.8);
+    align-items: center;
+    justify-content: center;
+    z-index: 1000;
+}
+
+.modal-content {
+    background: linear-gradient(to bottom right, #33334d, #4b4961);
+    padding: 20px;
+    border-radius: 8px;
+    width: 90%;
+    max-width: 500px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.5);
+    text-align: center;
+    color: #ffddc1;
+}
+
+.close-btn {
+    font-size: 1.5em;
+    color: #ffddc1;
+    float: right;
+    cursor: pointer;
+}
+
+.buy-stock-btn {
+    margin-top: 20px;
+    padding: 10px 20px;
+    background: linear-gradient(145deg, #ff7e5f, #feb47b);
+    border: none;
+    color: white;
+    font-size: 1em;
+    font-weight: bold;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.buy-stock-btn:hover {
+    background: linear-gradient(145deg, #feb47b, #ff7e5f);
+    transform: scale(1.05);
+}
+
+#buyFeedback {
+    margin-top: 15px;
+    font-size: 1em;
+    color: #ffddc1;
+}

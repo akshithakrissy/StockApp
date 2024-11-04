@@ -1,0 +1,153 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Settings | StockWise</title>
+    <link rel="stylesheet" href="{% static 'css/settings.css' %}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    <style>
+        .password-strength {
+            font-size: 12px;
+            margin-top: 5px;
+            color: red; /* Default color for weak passwords */
+        }
+        .strong {
+            color: green; /* Color for strong passwords */
+        }
+        .medium {
+            color: orange; /* Color for medium passwords */
+        }
+        .theme-selector {
+            margin: 15px 0;
+        }
+        .spinner {
+            display: none;
+            border: 2px solid #f3f3f3;
+            border-top: 2px solid #3498db;
+            border-radius: 50%;
+            width: 20px;
+            height: 20px;
+            animation: spin 1s linear infinite;
+            margin: 0 auto; /* Center spinner */
+        }
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+    </style>
+</head>
+<body>
+    <div class="settings-header">
+        <h1>Settings</h1>
+    </div>
+    <div class="settings-container">
+        <form id="settingsForm" onsubmit="updateSettings(event)">
+            <div class="form-group">
+                <label for="username"><i class="fas fa-user"></i> Username</label>
+                <input type="text" id="username" name="username" placeholder="Enter your username" required>
+            </div>
+
+            <div class="form-group">
+                <label for="email"><i class="fas fa-envelope"></i> Email</label>
+                <input type="email" id="email" name="email" placeholder="Enter your email" required>
+            </div>
+
+            <div class="form-group">
+                <label for="password"><i class="fas fa-lock"></i> New Password</label>
+                <input type="password" id="password" name="password" placeholder="Enter new password" required oninput="checkPasswordStrength()">
+                <div class="password-strength" id="passwordStrength"></div>
+            </div>
+
+            <div class="form-group">
+                <label for="confirm-password"><i class="fas fa-lock"></i> Confirm Password</label>
+                <input type="password" id="confirm-password" name="confirm-password" placeholder="Confirm new password" required>
+                <div class="password-error" id="passwordError" style="color:red;"></div>
+            </div>
+
+            <div class="form-group">
+                <label for="emailNotifications">
+                    <input type="checkbox" id="emailNotifications" name="emailNotifications"> Receive Email Notifications
+                </label>
+            </div>
+
+            <div class="form-group theme-selector">
+                <label for="theme">Select Theme:</label>
+                <select id="theme" name="theme" onchange="changeTheme(event)">
+                    <option value="light">Light</option>
+                    <option value="dark">Dark</option>
+                </select>
+            </div>
+
+            <div class="spinner" id="loadingSpinner"></div>
+            <input type="submit" value="Update Settings" class="btn">
+            <div id="message" class="success-message"></div>
+        </form>
+    </div>
+
+    <script>
+        function checkPasswordStrength() {
+            const password = document.getElementById('password').value;
+            const strengthIndicator = document.getElementById('passwordStrength');
+            const passwordError = document.getElementById('passwordError');
+            strengthIndicator.className = ''; // Reset the class
+            passwordError.innerText = ''; // Clear previous error message
+
+            // Basic password strength checking
+            let strength = 'Weak';
+            if (password.length >= 8) {
+                if (/[A-Z]/.test(password) && /[0-9]/.test(password)) {
+                    strength = 'Strong';
+                    strengthIndicator.classList.add('strong');
+                } else {
+                    strength = 'Medium';
+                    strengthIndicator.classList.add('medium');
+                }
+            }
+
+            strengthIndicator.innerText = `Password Strength: ${strength}`;
+
+            // Check if passwords match
+            const confirmPassword = document.getElementById('confirm-password').value;
+            if (confirmPassword && password !== confirmPassword) {
+                passwordError.innerText = 'Passwords do not match!';
+            }
+        }
+
+        function updateSettings(event) {
+            event.preventDefault(); // Prevent the form from submitting traditionally
+            const loadingSpinner = document.getElementById('loadingSpinner');
+            loadingSpinner.style.display = 'block'; // Show loading spinner
+
+            const username = document.getElementById('username').value;
+            const email = document.getElementById('email').value;
+            const password = document.getElementById('password').value;
+            const emailNotifications = document.getElementById('emailNotifications').checked;
+
+            // Here you would typically send a request to your server to update the settings
+            // For demonstration purposes, we'll just show a success message after a timeout
+
+            setTimeout(() => {
+                loadingSpinner.style.display = 'none'; // Hide loading spinner
+                document.getElementById('message').innerText = 'Settings updated successfully!';
+                document.getElementById('message').classList.add('success-message');
+                document.getElementById('settingsForm').reset(); // Optionally reset the form
+            }, 2000); // Simulate a network delay
+        }
+
+        function changeTheme(event) {
+            const selectedTheme = event.target.value;
+            if (selectedTheme === 'dark') {
+                document.body.style.backgroundColor = '#333';
+                document.body.style.color = '#fff';
+                document.querySelector('.settings-container').style.backgroundColor = '#444';
+            } else {
+                document.body.style.backgroundColor = '#f0f4f8';
+                document.body.style.color = '#000';
+                document.querySelector('.settings-container').style.backgroundColor = 'white';
+            }
+        }
+    </script>
+</body>
+</html>

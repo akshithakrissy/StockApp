@@ -1,0 +1,154 @@
+/* General Reset */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+/* Body and Container Styles */
+body {
+    font-family: 'Poppins', sans-serif; /* Modern typography */
+    background-color: #f0f4f8; /* Match dashboard background */
+    color: #333;
+    line-height: 1.6;
+}
+
+.container {
+    max-width: 1200px; /* Match dashboard container width */
+    margin: auto;
+    padding: 20px; /* Match dashboard padding */
+    transition: all 0.3s ease-in-out;
+}
+
+/* Title Styles */
+h1 {
+    text-align: center;
+    color: #2c3e50; /* Dark blue color for the title */
+    font-size: 2.5rem; /* Larger title */
+    margin-bottom: 30px;
+    text-transform: uppercase; /* Uppercase for a more formal look */
+    letter-spacing: 1px; /* Slightly increased letter spacing */
+    position: relative;
+}
+
+h1::after {
+    content: "";
+    display: block;
+    height: 4px; /* Underline effect */
+    width: 60%; /* Width of the underline */
+    background: #3E5B99; /* Change color to match dashboard */
+    margin: 10px auto; /* Centered underline */
+}
+
+/* Form Styles */
+form {
+    max-width: 600px; /* Increased width for a more spacious layout */
+    margin: auto;
+    background: #ffffff; /* White background for the form */
+    padding: 25px; /* Slightly increased padding for comfort */
+    border-radius: 10px;
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.1); /* Stronger shadow */
+}
+
+/* Label Styles */
+label {
+    display: block;
+    margin-bottom: 10px; /* Increased margin for clarity */
+    font-weight: bold;
+    color: #2c3e50; /* Dark blue for the labels */
+    font-size: 1.1rem; /* Slightly larger font size */
+}
+
+/* Input Styles */
+input[type="text"],
+input[type="number"],
+select {
+    width: 100%;
+    padding: 12px; /* More padding for a comfortable feel */
+    margin-bottom: 15px;
+    border: 2px solid #ccc; /* Light gray borders */
+    border-radius: 8px; /* Match dashboard input radius */
+    background-color: #f9f9f9; /* Light input background */
+    color: #333; /* Dark text for contrast */
+    font-size: 1rem; /* Consistent font size */
+    transition: border-color 0.3s, box-shadow 0.3s; /* Added transition for box-shadow */
+}
+
+input[type="text"]:focus,
+input[type="number"]:focus,
+select:focus {
+    border-color: #3E5B99; /* Light blue border on focus */
+    outline: none;
+    box-shadow: 0 0 8px rgba(62, 91, 153, 0.3); /* Match dashboard focus glow */
+}
+
+/* Button Styles */
+button[type="submit"],
+button {
+    padding: 12px; /* More padding for comfort */
+    background: linear-gradient(45deg, #3E5B99, #2A3C6D); /* Gradient button */
+    color: #ffffff; /* White text for contrast */
+    border: none;
+    border-radius: 8px; /* Match dashboard button radius */
+    font-size: 1rem; /* Consistent font size */
+    cursor: pointer;
+    transition: background 0.3s ease, transform 0.2s ease; /* Added transform effect */
+    margin-bottom: 15px; /* Increased bottom margin */
+    width: 100%; /* Full width */
+}
+
+button[type="submit"]:hover,
+button:hover {
+    background: linear-gradient(45deg, #2A3C6D, #1F2849); /* Darker gradient on hover */
+    transform: translateY(-3px); /* Hover lift effect */
+}
+
+button[type="submit"]:active,
+button:active {
+    background: linear-gradient(45deg, #3E5B99, #2A3C6D); /* Deep shade on click */
+    transform: translateY(0); /* Reset lift effect */
+}
+
+/* Error Message Styles */
+.error-message {
+    color: #e74c3c; /* Soft red for error messages */
+    font-size: 13px;
+    margin-top: -10px; /* Adjusted positioning */
+}
+
+/* Preview Styles */
+#preview {
+    margin-top: 20px;
+    padding: 10px;
+    border: 1px solid #3498db; /* Light blue border for the preview */
+    border-radius: 5px;
+    background: #f9f9f9; /* Light background for the preview box */
+    color: #333; /* Dark text for the preview */
+    font-size: 14px;
+    width: 100%; /* Make preview full width */
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    transition: transform 0.3s; /* Added transition */
+}
+
+#preview:hover {
+    transform: scale(1.02); /* Slight zoom effect on hover */
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    h1 {
+        font-size: 2rem; /* Adjust title size on smaller screens */
+    }
+
+    form {
+        width: 90%; /* Responsive form width */
+    }
+
+    input[type="text"],
+    input[type="number"],
+    select,
+    button[type="submit"],
+    button {
+        width: 100%; /* Full width for inputs and buttons */
+    }
+}

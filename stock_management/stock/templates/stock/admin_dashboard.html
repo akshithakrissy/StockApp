@@ -1,0 +1,394 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Dashboard | StockWise</title>
+    <link rel="stylesheet" href="{% static 'css/admin_dashboard.css' %}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        /* Popup modal styles */
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 9999;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            overflow: auto;
+            background-color: rgba(0, 0, 0, 0.4);
+        }
+
+        .modal-content {
+            background-color: #fefefe;
+            margin: 15% auto;
+            padding: 20px;
+            border: 1px solid #888;
+            width: 80%;
+        }
+
+        .close {
+            color: #aaa;
+            float: right;
+            font-size: 28px;
+            font-weight: bold;
+        }
+
+        .close:hover,
+        .close:focus {
+            color: black;
+            text-decoration: none;
+            cursor: pointer;
+        }
+       /* Chart container */
+       #stockChartContainer {
+            width: 100%;
+            max-width: 800px;
+            margin: 20px auto;
+        }
+
+        #stockChart {
+            width: 100%;
+            height: 400px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>Welcome to the Admin Dashboard, {{ user.username }}</h1>
+            <nav>
+                <a href="{% url 'logout' %}"><i class="fas fa-sign-out-alt"></i> Logout</a>
+                <a href="#" id="viewUsersBtn"><i class="fas fa-users"></i> View Users</a>
+                <a href="{% url 'settings' %}"><i class="fas fa-cog"></i> Settings</a>
+                <a href="{% url 'admin_profile' %}"><i class="fas fa-user"></i> Profile</a>
+            </nav>
+        </header>
+        <main>
+            <section class="low-stock-alert">
+                <h2>Low Stock Alerts</h2>
+                <ul id="lowStockAlertList">
+                    {% for stock in stocks %}
+                        {% if stock.quantity < stock.low_stock_threshold %}
+                            <li>⚠️ {{ stock.name }} is low in stock ({{ stock.quantity }} left)</li>
+                        {% endif %}
+                    {% endfor %}
+                </ul>
+            </section>
+
+            <!-- Stock Management Section -->
+            <section class="stock-management">
+                <h2>Stock Management</h2>
+
+                  <!-- Stock chart section -->
+                  <div id="stockChartContainer">
+                    <canvas id="stockChart"></canvas>
+                </div>
+                <input type="text" id="stockSearch" placeholder="Search stocks...">
+                <div class="action-buttons">
+                    <a class="btn" href="{% url 'add_stock' %}">Add New Stock</a>
+                    <a class="btn" href="{% url 'view_stock' %}">View All Stock</a>
+                    <a class="btn" href="{% url 'export_stock_csv' %}">Export Stock Data</a>
+                </div>
+
+                <table>
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Name</th>
+                            <th>Quantity</th>
+                            <th>Price</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody id="stockTableBody">
+                        {% for stock in stocks %}
+                            <tr id="stock-row-{{ stock.id }}">
+                                <td>{{ stock.id }}</td>
+                                <td>{{ stock.name }}</td>
+                                <td>{{ stock.quantity }}</td>
+                                <td>{{ stock.price }}</td>
+                                <td>
+                                    <a class="btn-action" onclick="openEditStockModal('{{ stock.id }}', '{{ stock.name }}', '{{ stock.quantity }}', '{{ stock.price }}')">Edit</a>
+                                    <a class="btn-action" onclick="deleteStock('{{ stock.id }}')">Delete</a>
+                                </td>
+                            </tr>
+                        {% empty %}
+                            <tr>
+                                <td colspan="5">No stocks available.</td>
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+                
+            </section>
+
+            <!-- User Management Section -->
+            <section class="user-management" style="display: none;" id="userManagementSection">
+                <h2>User Management</h2>
+                <input type="text" id="userSearch" placeholder="Search users...">
+                <div class="action-buttons">
+                    <a class="btn" href="{% url 'export_user_csv' %}">Export User Data</a>
+                </div>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Username</th>
+                            <th>Email</th>
+                            <th>Date Joined</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody id="userTableBody">
+                        {% for user in users %}
+                            <tr id="user-row-{{ user.id }}">
+                                <td>{{ user.id }}</td>
+                                <td>{{ user.username }}</td>
+                                <td>{{ user.email }}</td>
+                                <td>{{ user.date_joined }}</td>
+                                <td>
+                                    <a class="btn-action" onclick="deleteUser('{{ user.id }}')">Delete</a>
+                                </td>
+                            </tr>
+                        {% empty %}
+                            <tr>
+                                <td colspan="5">No users available.</td>
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </section>
+        </main>
+        <footer>
+            <p>&copy; {{ current_year }} StockWise. All rights reserved.</p>
+        </footer>
+    </div>
+
+    <!-- Edit Stock Modal -->
+    <div id="editStockModal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeEditStockModal()">&times;</span>
+            <h2>Edit Stock</h2>
+            <form id="editStockForm">
+                <input type="hidden" id="editStockId">
+                <label for="editStockName">Name:</label>
+                <input type="text" id="editStockName" required>
+                <label for="editStockQuantity">Quantity:</label>
+                <input type="number" id="editStockQuantity" required>
+                <label for="editStockPrice">Price:</label>
+                <input type="number" id="editStockPrice" step="0.01" required>
+                <button type="submit">Save</button>
+            </form>
+        </div>
+    </div>
+
+    <script>
+         // Stock Chart
+         
+        const stockData = {{stock_data|safe}};
+        const ctx = document.getElementById('stockChart').getContext('2d');
+        const stockChart = new Chart(ctx, {
+            type:'bar', // You can change to 'line', 'pie', etc.
+            data: {
+                labels: stockData.labels, // Stock names
+                datasets: [{
+                    label: 'Stock Quantity',
+                    data: stockData.quantities, // Stock quantities
+                    backgroundColor: 'rgba(54, 162, 235, 0.2)',
+                    borderColor: 'rgba(54, 162, 235, 1)',
+                    borderWidth: 1
+                }]
+            },
+            options: {
+                scales: {
+                    y: {
+                        beginAtZero: true
+                    }
+                },
+                responsive: true
+            }
+        });
+        $(document).ready(function() {
+            let userManagementVisible = false;
+
+            $('#viewUsersBtn').click(function() {
+                userManagementVisible = !userManagementVisible; // Toggle visibility
+                if (userManagementVisible) {
+                    $.ajax({
+                        url: "{% url 'fetch_users' %}",
+                        type: 'GET',
+                        success: function(data) {
+                            $('#userTableBody').empty(); // Clear existing rows
+                            $.each(data, function(index, user) {
+                                $('#userTableBody').append(`
+                                    <tr id="user-row-${user.id}">
+                                        <td>${user.id}</td>
+                                        <td>${user.username}</td>
+                                        <td>${user.email}</td>
+                                        <td>${user.date_joined}</td>
+                                        <td>
+                                            <a class="btn-action" onclick="deleteUser('${user.id}')">Delete</a>
+                                        </td>
+                                    </tr>
+                                `);
+                            });
+                            $('#userManagementSection').show(); // Show the user management section
+                        },
+                        error: function(xhr, status, error) {
+                            console.error("Error fetching users:", error);
+                        }
+                    });
+                } else {
+                    $('#userManagementSection').hide(); // Hide user management section
+                }
+            });
+
+            // Stock search functionality
+            $('#stockSearch').on('keyup', function() {
+                let value = $(this).val().toLowerCase();
+                $('#stockTableBody tr').filter(function() {
+                    $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1);
+                });
+            });
+
+            // User search functionality
+            $('#userSearch').on('keyup', function() {
+                let value = $(this).val().toLowerCase();
+                $('#userTableBody tr').filter(function() {
+                    $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1);
+                });
+            });
+        });
+
+        function openEditStockModal(id, name, quantity, price) {
+            $('#editStockId').val(id);
+            $('#editStockName').val(name);
+            $('#editStockQuantity').val(quantity);
+            $('#editStockPrice').val(price);
+            $('#editStockModal').show();
+        }
+
+        function closeEditStockModal() {
+            $('#editStockModal').hide();
+        }
+
+        $('#editStockForm').on('submit', function(event) {
+            event.preventDefault(); // Prevent form submission
+            saveEditStock();
+        });
+
+        function saveEditStock() {
+            const id = $('#editStockId').val();
+            const name = $('#editStockName').val();
+            const quantity = $('#editStockQuantity').val();
+            const price = $('#editStockPrice').val();
+
+            $.ajax({
+                url: `/edit-stock/${id}/`,
+                type: 'POST',
+                data: {
+                    'name': name,
+                    'quantity': quantity,
+                    'price': price,
+                    'csrfmiddlewaretoken': '{{ csrf_token }}'
+                },
+                success: function(response) {
+                    const stockRow = $(`#stock-row-${id}`);
+                    stockRow.find('td:nth-child(2)').text(name);
+                    stockRow.find('td:nth-child(3)').text(quantity);
+                    stockRow.find('td:nth-child(4)').text(price);
+                    closeEditStockModal();
+                },
+                error: function(xhr, status, error) {
+                    console.error("Error saving stock:", error);
+                }
+            });
+        }
+
+        function deleteStock(id) {
+            if (confirm("Are you sure you want to delete this stock?")) {
+                $.ajax({
+                    url: `/delete-stock/${id}/`,
+                    type: 'DELETE',
+                    headers: {
+                        'X-CSRFToken': '{{ csrf_token }}'
+                    },
+                    success: function(response) {
+                        $(`#stock-row-${id}`).remove();
+                    },
+                    error: function(xhr, status, error) {
+                        console.error("Error deleting stock:", error);
+                    }
+                });
+            }
+        }
+
+        function deleteUser(id) {
+            if (confirm("Are you sure you want to delete this user?")) {
+                $.ajax({
+                    url: `/delete-user/${id}/`,
+                    type: 'DELETE',
+                    headers: {
+                        'X-CSRFToken': '{{ csrf_token }}'
+                    },
+                    success: function(response) {
+                        $(`#user-row-${id}`).remove();
+                    },
+                    error: function(xhr, status, error) {
+                        console.error("Error deleting user:", error);
+                    }
+                });
+            }
+        
+            $(document).ready(function() {
+        // Low stock alert check
+        function checkLowStock() {
+            $('#lowStockAlertList').empty(); // Clear previous alerts
+
+            $('#stockTableBody tr').each(function() {
+                const quantity = parseInt($(this).find('td:nth-child(3)').text());
+                const lowStockThreshold = 10; // Set a custom low-stock threshold here
+
+                if (quantity < lowStockThreshold) {
+                    const stockName = $(this).find('td:nth-child(2)').text();
+                    $('#lowStockAlertList').append(`<li>⚠️ ${stockName} is low in stock (${quantity} left)</li>`);
+                }
+            });
+        }
+
+        // Call the check function on page load and after dynamically loading stock data
+        checkLowStock();
+
+        // Example: Call checkLowStock after a data fetch, if you're loading stocks dynamically
+        $.ajax({
+            url: "{% url 'fetch_stocks' %}",
+            type: 'GET',
+            success: function(data) {
+                $('#stockTableBody').empty(); // Clear existing rows
+                $.each(data, function(index, stock) {
+                    $('#stockTableBody').append(`
+                        <tr>
+                            <td>${stock.id}</td>
+                            <td>${stock.name}</td>
+                            <td>${stock.quantity}</td>
+                            <td>${stock.price}</td>
+                        </tr>
+                    `);
+                });
+                checkLowStock(); // Re-run check after data load
+            },
+            error: function(xhr, status, error) {
+                console.error("Error fetching stocks:", error);
+            }
+        });
+    });
+
+        }
+    </script>
+</body>
+</html> 

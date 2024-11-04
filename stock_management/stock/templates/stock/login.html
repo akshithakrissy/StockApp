@@ -1,0 +1,72 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>User Login | StockWise</title>
+    <link rel="stylesheet" href="{% static 'css/login.css' %}">
+    <style>
+        /* Body background with gradient */
+        body {
+            background-image: url("{% static 'images/Inventory.jpg' %}");
+            background-size: cover;
+            background-position: center;
+            background-attachment: fixed;
+            font-family: 'Montserrat', sans-serif;
+            color: #333;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+    </style>
+</head>
+<body>
+    <div class="login-container">
+        <h2>User Login</h2>
+
+        <form method="POST" action="{% url 'login' %}">
+            {% csrf_token %}
+            <label for="username">Username:</label>
+            <input type="text" id="username" name="username" required>
+
+            <label for="password">Password:</label>
+            <input type="password" id="password" name="password" required>
+            <input type="checkbox" id="show-password">
+            <label for="show-password" class="show-password">Show Password</label>
+
+            {% if error %}
+            <p style="color:red">{{ error }}</p>
+            {% endif %}
+
+            <label for="remember-me">
+                <input type="checkbox" id="remember-me" name="remember_me"> Remember Me
+            </label>
+
+            <button type="submit">Login</button>
+        </form>
+
+        <p>Are you an admin? <a href="{% url 'admin_login' %}">Admin Login</a></p>
+        <p>Don't have an account? <a href="{% url 'signup' %}">Sign up here</a></p>
+
+        <div class="social-login">
+            <a href="https://myaccount.google.com/"><img src="{% static 'images/google.png' %}" alt="Google"> Login with Google</a>
+            <a href="https://www.facebook.com/login/?privacy_mutation_token=eyJ0eXBlIjowLCJjcmVhdGlvbl90aW1lIjoxNzI3OTU0MDcwLCJjYWxsc2l0ZV9pZCI6MjY5NTQ4NDUzMDcyMDk1MX0%3D"><img src="{% static 'images/facebook.png' %}" alt="Facebook"> Login with Facebook</a>
+        </div>
+    </div>
+
+    <script>
+        document.getElementById('show-password').addEventListener('change', function() {
+            var passwordInput = document.getElementById('password');
+            if (this.checked) {
+                passwordInput.type = 'text';
+            } else {
+                passwordInput.type = 'password';
+            }
+        });
+    </script>
+</body>
+</html>

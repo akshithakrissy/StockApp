@@ -1,0 +1,210 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard | StockWise</title>
+    <link rel="stylesheet" href="{% static 'css/dashboard.css' %}">
+</head>
+<body>
+    <nav>
+        <div class="logo">
+            <h2>StockWise</h2>
+        </div>
+        <div>
+            <a href="{% url 'dashboard' %}">Dashboard</a>
+            <a href="{% url 'logout' %}">Logout</a> <!-- Logout link -->
+        </div>
+    </nav>
+
+    <div class="dashboard-container">
+        <h2>Welcome to the StockWise Dashboard</h2>
+        <input type="text" id="searchBar" class="search-bar" placeholder="Search Stock Items...">
+
+        <table class="stock-table">
+            <thead>
+                <tr>
+                    <th>Item ID</th>
+                    <th>Item Name</th>
+                    <th>Category</th>
+                    <th>Quantity</th>
+                    <th>Price</th>
+                    <th>Action</th>
+                </tr>
+            </thead>
+            <tbody id="stockTableBody">
+                <tr>
+                    <td>1</td>
+                    <td>Laptop</td>
+                    <td>Electronics</td>
+                    <td>10</td>
+                    <td>$1000</td>
+                    <td>
+                        <button class="edit-btn">Edit</button>
+                        <button class="delete-btn">Delete</button>
+                    </td>
+                </tr>
+                <tr>
+                    <td>2</td>
+                    <td>Mobile Phone</td>
+                    <td>Electronics</td>
+                    <td>25</td>
+                    <td>$500</td>
+                    <td>
+                        <button class="edit-btn">Edit</button>
+                        <button class="delete-btn">Delete</button>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+
+        <button class="add-stock-btn" id="addItemBtn">Add Stock Item</button>
+
+        <!-- Modal for adding and editing stock -->
+        <div class="modal" id="addItemModal">
+            <div class="modal-content">
+                <span class="close-btn" id="closeModalBtn">&times;</span>
+                <h2 id="modalTitle">Add New Stock Item</h2>
+
+                <form id="addStockForm">
+                    <input type="text" id="itemName" placeholder="Item Name" required>
+                    <input type="text" id="itemCategory" placeholder="Item Category" required>
+                    <input type="number" id="itemQuantity" placeholder="Item Quantity" required>
+                    <input type="number" id="itemPrice" placeholder="Item Price ($)" required>
+
+                    <button type="submit" id="submitBtn">Add Item</button>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <footer class="footer">
+        <p>&copy; 2024 StockWise. All rights reserved.</p>
+    </footer>
+
+    <script>
+        const searchBar = document.getElementById('searchBar');
+        const stockTableBody = document.getElementById('stockTableBody');
+        const addItemBtn = document.getElementById('addItemBtn');
+        const addItemModal = document.getElementById('addItemModal');
+        const closeModalBtn = document.getElementById('closeModalBtn');
+        let editIndex = null;
+
+        // Filter items based on search query
+        searchBar.addEventListener('input', function() {
+            const filter = searchBar.value.toLowerCase();
+            const rows = stockTableBody.querySelectorAll('tr');
+            rows.forEach(row => {
+                const itemName = row.children[1].textContent.toLowerCase();
+                const itemCategory = row.children[2].textContent.toLowerCase();
+                if (itemName.includes(filter) || itemCategory.includes(filter)) {
+                    row.style.display = '';
+                } else {
+                    row.style.display = 'none';
+                }
+            });
+        });
+
+        // Show the modal for adding a new stock item
+        addItemBtn.addEventListener('click', function() {
+            resetModal();
+            addItemModal.style.display = 'flex';
+        });
+
+        // Close the modal
+        closeModalBtn.addEventListener('click', function() {
+            addItemModal.style.display = 'none';
+        });
+
+        // Submit form to add/edit stock item
+        document.getElementById('addStockForm').addEventListener('submit', function(event) {
+            event.preventDefault();
+            const itemName = document.getElementById('itemName').value;
+            const itemCategory = document.getElementById('itemCategory').value;
+            const itemQuantity = document.getElementById('itemQuantity').value;
+            const itemPrice = document.getElementById('itemPrice').value;
+
+            if (editIndex === null) {
+                // Add new item
+                const newRow = document.createElement('tr');
+                newRow.innerHTML = `
+                    <td>${stockTableBody.children.length + 1}</td>
+                    <td>${itemName}</td>
+                    <td>${itemCategory}</td>
+                    <td>${itemQuantity}</td>
+                    <td>${itemPrice}</td>
+                    <td>
+                        <button class="edit-btn">Edit</button>
+                        <button class="delete-btn">Delete</button>
+                    </td>
+                `;
+                stockTableBody.appendChild(newRow);
+                attachRowEventListeners(newRow);
+            } else {
+                // Edit existing item
+                const row = stockTableBody.children[editIndex];
+                row.children[1].textContent = itemName;
+                row.children[2].textContent = itemCategory;
+                row.children[3].textContent = itemQuantity;
+                row.children[4].textContent = itemPrice;
+                editIndex = null;
+            }
+
+            addItemModal.style.display = 'none';
+            updateItemIDs();
+        });
+
+        // Attach event listeners for edit and delete buttons in the table row
+        function attachRowEventListeners(row) {
+            const editBtn = row.querySelector('.edit-btn');
+            const deleteBtn = row.querySelector('.delete-btn');
+
+            editBtn.addEventListener('click', function() {
+                editItem([...row.parentElement.children].indexOf(row));
+            });
+
+            deleteBtn.addEventListener('click', function() {
+                if (confirm('Are you sure you want to delete this item?')) {
+                    row.remove();
+                    updateItemIDs();
+                }
+            });
+        }
+
+        // Edit stock item functionality
+        function editItem(index) {
+            const row = stockTableBody.children[index];
+            document.getElementById('itemName').value = row.children[1].textContent;
+            document.getElementById('itemCategory').value = row.children[2].textContent;
+            document.getElementById('itemQuantity').value = row.children[3].textContent;
+            document.getElementById('itemPrice').value = row.children[4].textContent;
+
+            document.getElementById('modalTitle').textContent = 'Edit Stock Item';
+            document.getElementById('submitBtn').textContent = 'Update Item';
+            addItemModal.style.display = 'flex';
+            editIndex = index;
+        }
+
+        // Reset modal form
+        function resetModal() {
+            document.getElementById('addStockForm').reset();
+            document.getElementById('modalTitle').textContent = 'Add New Stock Item';
+            document.getElementById('submitBtn').textContent = 'Add Item';
+        }
+
+        // Update Item IDs after adding or removing rows
+        function updateItemIDs() {
+            const rows = stockTableBody.querySelectorAll('tr');
+            rows.forEach((row, index) => {
+                row.children[0].textContent = index + 1;
+            });
+        }
+
+        // Initial attachment of event listeners for existing rows
+        const initialRows = stockTableBody.querySelectorAll('tr');
+        initialRows.forEach(row => attachRowEventListeners(row));
+
+    </script>
+</body>
+</html>

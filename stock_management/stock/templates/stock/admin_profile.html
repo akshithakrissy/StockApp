@@ -1,0 +1,147 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Profile | StockWise</title>
+    <link rel="stylesheet" href="{% static 'css/admin_profile.css' %}">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>Admin Profile</h1>
+            <nav>
+                <a href="{% url 'admin_dashboard' %}">Dashboard</a>
+                <a href="{% url 'logout' %}">Logout</a>
+                <a href="{% url 'settings' %}">Settings</a>
+            </nav>
+        </header>
+        
+        <main>
+            <section class="profile-card">
+                <div class="profile-header">
+                    <img src="{% static 'images/admin-avatar.png' %}" alt="Admin Avatar" class="profile-avatar">
+                    <h2>{{ admin.username }}</h2>
+                    <p class="email">{{ admin.email }}</p>
+                </div>
+
+                <div class="profile-info">
+                    <h3>Profile Information</h3>
+                    <p><strong>Full Name:</strong> <span id="fullName">{{full_name }}</span></p>
+                    <p><strong>Role:</strong> Administrator</p>
+                    <p><strong>Date Joined:</strong> {{ admin.date_joined }}</p>
+                </div>
+
+                <!-- Buttons to Edit Profile and Change Password -->
+                <div class="edit-profile">
+                    <button id="showEditProfileBtn" class="btn">Edit Profile</button>
+                    <button id="showChangePasswordBtn" class="btn">Change Password</button>
+                </div>
+
+                <!-- Edit Profile Section (Initially Hidden) -->
+                <div id="editProfileSection" style="display: none;">
+                    <h3>Edit Profile</h3>
+                    <input type="text" id="newFullName" value="{{ admin.full_name }}" placeholder="Enter new full name">
+                    <button id="saveProfileBtn" class="btn">Save Changes</button>
+                </div>
+
+                <!-- Change Password Section (Initially Hidden) -->
+                <div id="changePasswordSection" style="display: none;">
+                    <h3>Change Password</h3>
+                    <input type="password" id="currentPassword" placeholder="Current Password" required>
+                    <input type="password" id="newPassword" placeholder="New Password" required>
+                    <input type="password" id="confirmPassword" placeholder="Confirm New Password" required>
+                    <button id="changePasswordBtn" class="btn">Change Password</button>
+                </div>
+            </section>
+        </main>
+        
+        <footer>
+            <p>&copy; {{ current_year }} StockWise. All rights reserved.</p>
+        </footer>
+    </div>
+
+    <script>
+        // Show the edit profile section
+        document.getElementById('showEditProfileBtn').addEventListener('click', function() {
+            const editProfileSection = document.getElementById('editProfileSection');
+            const changePasswordSection = document.getElementById('changePasswordSection');
+
+            editProfileSection.style.display = 'block';  // Show edit profile section
+            changePasswordSection.style.display = 'none';  // Hide change password section
+        });
+
+        // Show the change password section
+        document.getElementById('showChangePasswordBtn').addEventListener('click', function() {
+            const changePasswordSection = document.getElementById('changePasswordSection');
+            const editProfileSection = document.getElementById('editProfileSection');
+
+            changePasswordSection.style.display = 'block';  // Show change password section
+            editProfileSection.style.display = 'none';  // Hide edit profile section
+        });
+
+        // Handle save profile button click
+        document.getElementById('saveProfileBtn').addEventListener('click', function() {
+            const newFullName = document.getElementById('newFullName').value;
+
+            fetch("{% url 'edit_profile' %}", {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRFToken': '{{ csrf_token }}'
+                },
+                body: JSON.stringify({ new_full_name: newFullName })
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    // Update the displayed full name
+                    document.getElementById('fullName').textContent = newFullName;
+                    alert('Profile updated successfully.');
+                } else {
+                    alert('Error updating profile: ' + data.error);
+                }
+            })
+            .catch(error => console.error('Error:', error));
+        });
+
+        // Handle change password button click
+        document.getElementById('changePasswordBtn').addEventListener('click', function() {
+            const currentPassword = document.getElementById('currentPassword').value;
+            const newPassword = document.getElementById('newPassword').value;
+            const confirmPassword = document.getElementById('confirmPassword').value;
+
+            if (newPassword !== confirmPassword) {
+                alert("New passwords do not match.");
+                return;
+            }
+
+            fetch("{% url 'change_password' %}", {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRFToken': '{{ csrf_token }}'
+                },
+                body: JSON.stringify({
+                    current_password: currentPassword,
+                    new_password: newPassword
+                })
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    alert('Password changed successfully.');
+                    // Clear the input fields after successful change
+                    document.getElementById('currentPassword').value = '';
+                    document.getElementById('newPassword').value = '';
+                    document.getElementById('confirmPassword').value = '';
+                } else {
+                    alert('Error changing password: ' + data.error);
+                }
+            })
+            .catch(error => console.error('Error:', error));
+        });
+    </script>
+</body>
+</html>

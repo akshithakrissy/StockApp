@@ -1,0 +1,145 @@
+/* Reset some basic elements */
+body, h1, p, input, textarea, button, a {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Arial', sans-serif;
+}
+
+body {
+    background: linear-gradient(to right, #f5f7fa, #c3cfe2);
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    color: #444;
+}
+
+/* Header */
+header {
+    text-align: center;
+    margin-bottom: 2rem;
+}
+
+header h1 {
+    font-size: 3rem;
+    color: #333;
+    font-weight: bold;
+}
+
+header p {
+    font-size: 1.2rem;
+    color: #666;
+    margin-top: 0.5rem;
+}
+
+/* Form Section */
+.form-section {
+    width: 100%;
+    max-width: 500px;
+    margin: 0 auto;
+    padding: 1rem;
+}
+
+.input-field {
+    margin-bottom: 1.5rem;
+}
+
+label {
+    display: block;
+    font-size: 1rem;
+    margin-bottom: 0.5rem;
+    color: #444;
+}
+
+input[type="text"], input[type="email"], textarea {
+    width: 100%;
+    padding: 0.8rem;
+    border: 2px solid #ccc;
+    border-radius: 8px;
+    font-size: 1rem;
+    background-color: #fff;
+    transition: all 0.3s ease;
+    box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.05);
+}
+
+input[type="text"]:focus, input[type="email"]:focus, textarea:focus {
+    border-color: #ff6f61;
+    box-shadow: 0 0 10px rgba(255, 111, 97, 0.2);
+    outline: none;
+}
+
+textarea {
+    height: 150px;
+    resize: none;
+}
+
+/* Submit Button */
+.submit-btn {
+    width: 100%;
+    background-color: #ff6f61;
+    color: white;
+    font-size: 1.2rem;
+    padding: 0.8rem;
+    border: none;
+    border-radius: 10px;
+    cursor: pointer;
+    transition: background-color 0.3s ease, transform 0.2s ease;
+    font-weight: bold;
+}
+
+.submit-btn:hover {
+    background-color: #e05297;
+    transform: translateY(-3px);
+}
+
+/* Back Link */
+footer {
+    margin-top: 2rem;
+}
+
+.back-link {
+    text-decoration: none;
+    font-size: 1rem;
+    color: #444;
+    font-weight: bold;
+    border-bottom: 2px solid #444;
+    transition: color 0.3s ease, border-color 0.3s ease;
+}
+
+.back-link:hover {
+    color: #ff6f61;
+    border-color: #ff6f61;
+}
+
+/* Alert Messages */
+.alert {
+    background-color: #d4edda;
+    color: #155724;
+    padding: 1rem;
+    border-radius: 8px;
+    margin-bottom: 1.5rem;
+    font-size: 1rem;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+/* Responsive Design */
+@media screen and (max-width: 600px) {
+    header h1 {
+        font-size: 2.5rem;
+    }
+
+    header p {
+        font-size: 1rem;
+    }
+
+    .submit-btn {
+        font-size: 1rem;
+        padding: 0.7rem;
+    }
+
+    .back-link {
+        font-size: 0.9rem;
+    }
+}

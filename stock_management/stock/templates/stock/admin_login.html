@@ -1,0 +1,62 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Login | StockWise</title>
+    <link rel="stylesheet" href="{% static 'css/admin_login.css' %}">
+    <style>
+        body {
+            background-image: url("{% static 'images/Inventory.jpg' %}");
+            background-size: cover;
+            background-position: center;
+            background-attachment: fixed;
+            font-family: 'Roboto', sans-serif;
+        }
+    </style>
+</head>
+<body>
+    <div class="login-container">
+        <h2>Admin Login</h2>
+
+        <form method="POST" action="{% url 'admin_login' %}">
+            {% csrf_token %}
+            <label for="username">Username:</label>
+            <input type="text" id="username" name="username" required>
+
+            <label for="password">Password:</label>
+            <input type="password" id="password" name="password" required>
+
+            <div class="options-container">
+                <label for="show-password" class="show-password">
+                    <input type="checkbox" id="show-password"> Show Password
+                </label>
+
+                <label for="remember-me" class="remember-me">
+                    <input type="checkbox" id="remember-me" name="remember_me"> Remember Me
+                </label>
+            </div>
+
+            {% if error %}
+            <p style="color:red">{{ error }}</p>
+            {% endif %}
+
+            <button type="submit">Login</button>
+        </form>
+
+        <p class="footer-text">Are you a user? <a href="{% url 'login' %}">User Login</a></p>
+    </div>
+
+    <script>
+        document.getElementById('show-password').addEventListener('change', function() {
+            var passwordInput = document.getElementById('password');
+            if (this.checked) {
+                passwordInput.type = 'text';
+            } else {
+                passwordInput.type = 'password';
+            }
+        });
+    </script>
+</body>
+</html>

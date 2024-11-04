@@ -1,0 +1,21 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sell Stock | StockWise</title>
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+</head>
+<body>
+    <div class="container">
+        <h1>Sell Stock</h1>
+        <form action="{% url 'sell_stock' %}" method="POST">
+            {% csrf_token %}
+            <input type="text" name="stock_name" placeholder="Stock Name" required>
+            <input type="number" name="quantity" placeholder="Quantity" required>
+            <button type="submit">Sell Stock</button>
+        </form>
+    </div>
+</body>
+</html>

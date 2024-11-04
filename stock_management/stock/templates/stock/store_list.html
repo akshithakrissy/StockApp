@@ -1,0 +1,47 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Registered Stores - StockWise</title>
+    <link rel="stylesheet" href="{% static 'css/store_list.css' %}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+</head>
+<body>
+    <!-- Sidebar Navigation -->
+    <nav id="sidebar" class="sidebar">
+        <h2>Dashboard</h2>
+        <ul>
+            <li><a href="{% url 'house' %}"><i class="fas fa-home"></i> Home</a></li>
+            <li><a href="{% url 'orders' %}"><i class="fas fa-box"></i> Orders</a></li>
+            <li><a href="{% url 'profile' %}"><i class="fas fa-user"></i> Profile</a></li>
+            <li><a href="{% url 'register_store' %}"><i class="fas fa-store"></i> Register Store</a></li>
+            <li><a href="{% url 'contact' %}"><i class="fas fa-envelope"></i> Contact Us</a></li>
+            <li><a href="{% url 'feedback' %}"><i class="fas fa-comments"></i> Feedback</a></li>
+            <li><a href="{% url 'login' %}"><i class="fas fa-sign-out-alt"></i> Logout</a></li>
+        </ul>
+    </nav>
+
+    <div class="main-content">
+        <h1>Registered Stores</h1>
+        <div class="store-list">
+            {% for store in stores %}
+            <div class="store-card">
+                <h2>{{ store.store_name }}</h2>
+                <p><strong>Owner:</strong> {{ store.owner_name }}</p>
+                <p><strong>Email:</strong> {{ store.email }}</p>
+                <p><strong>Phone:</strong> {{ store.phone }}</p>
+                <p><strong>Location:</strong> {{ store.location }}</p>
+                <p><strong>Description:</strong> {{ store.description }}</p>
+            </div>
+            {% endfor %}
+        </div>
+
+        <!-- Footer -->
+        <footer>
+            <p>&copy; 2024 StockWise. All rights reserved.</p>
+        </footer>
+    </div>
+</body>
+</html>

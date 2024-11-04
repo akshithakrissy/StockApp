@@ -1,0 +1,169 @@
+/* General Styles */
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f4f7f6;
+    color: #333;
+    margin: 0;
+    padding: 0;
+}
+
+/* Sidebar Styles */
+.sidebar {
+    position: fixed;
+    left: 0;
+    top: 0;
+    width: 250px;
+    height: 100%;
+    background-color: #1e4d7b; /* Dark blue */
+    color: #fff;
+    padding-top: 20px;
+    transition: left 0.3s ease;
+    z-index: 1000;
+}
+
+.sidebar h2 {
+    text-align: center;
+    font-size: 1.8rem;
+    margin-bottom: 1.5rem;
+}
+
+.sidebar ul li a {
+    color: #fff;
+    padding: 10px 20px;
+    text-decoration: none;
+    font-size: 1.2rem;
+    display: block;
+}
+
+.sidebar ul li a:hover, .sidebar ul li a.active {
+    background-color: #14508c;
+    color: white;
+}
+
+/* Toggle Button */
+.toggle-btn {
+    position: fixed;
+    top: 15px;
+    left: 250px;
+    background-color: #1e4d7b;
+    color: #fff;
+    padding: 10px;
+    border-radius: 50%;
+    cursor: pointer;
+    z-index: 1001;
+}
+
+.toggle-btn:hover {
+    background-color: #14508c;
+}
+
+/* Main Content */
+.main-content {
+    margin-left: 250px;
+    padding: 20px;
+    background-color: #fff;
+    border-radius: 10px;
+    max-width: calc(100% - 250px);
+    transition: margin-left 0.3s ease;
+}
+
+.sidebar.active ~ .main-content {
+    margin-left: 0;
+    max-width: 100%;
+}
+
+/* Store Registration Form */
+.register-store-form {
+    background-color: #fff;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.05);
+}
+
+.register-store-form form .form-group {
+    margin-bottom: 15px;
+}
+
+.register-store-form label {
+    font-size: 1.1rem;
+    color: #1e4d7b;
+}
+
+.register-store-form input, .register-store-form textarea {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    margin-top: 5px;
+    font-size: 1rem;
+}
+
+.register-store-form .submit-btn {
+    background-color: #1e4d7b;
+    color: white;
+    padding: 10px 20px;
+    font-size: 1rem;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.register-store-form .submit-btn:hover {
+    background-color: #14508c;
+}
+
+/* Store List */
+.store-list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+}
+
+/* Store Card */
+.store-card {
+    background-color: #f9f9f9;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    padding: 20px;
+    width: calc(33.33% - 20px);
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.store-card:hover {
+    transform: scale(1.05);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+/* Delete Button Styling */
+.delete-btn {
+    background-color: #e74c3c; /* Red background */
+    color: white;
+    border: none;
+    padding: 10px 15px;
+    font-size: 1rem;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.delete-btn:hover {
+    background-color: #c0392b; /* Darker red on hover */
+}
+
+
+/* Responsive Adjustments */
+@media (max-width: 768px) {
+    .sidebar {
+        width: 200px;
+    }
+
+    .main-content {
+        margin-left: 0;
+    }
+
+    .store-card {
+        width: 100%;
+    }
+}

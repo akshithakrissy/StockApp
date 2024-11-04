@@ -1,0 +1,269 @@
+/* General Styles */
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background-color: #f4f7f6;
+    color: #333;
+    margin: 0;
+    padding: 0;
+}
+
+/* Sidebar Styles */
+.sidebar {
+    position: fixed;
+    left: 0;
+    top: 0;
+    width: 250px;
+    height: 100%;
+    background-color: #1e4d7b; /* Dark blue background */
+    color: #fff;
+    transition: left 0.3s ease; /* Smooth transition effect */
+    padding-top: 20px;
+    z-index: 1000;
+}
+
+.sidebar h2 {
+    text-align: center;
+    font-size: 1.8rem;
+    margin-bottom: 1.5rem;
+    letter-spacing: 2px;
+    border-bottom: 2px solid #fff;
+    padding-bottom: 10px;
+}
+
+.sidebar ul {
+    list-style: none;
+    padding: 0;
+}
+
+.sidebar ul li {
+    margin: 15px 0;
+}
+
+.sidebar ul li a {
+    display: block;
+    color: #fff;
+    padding: 10px 20px;
+    text-decoration: none;
+    font-size: 1.2rem;
+    transition: background 0.3s ease;
+    border-radius: 4px;
+}
+
+.sidebar ul li a:hover {
+    background-color: #fff;
+    color: #1e4d7b; /* Dark blue text on hover */
+}
+
+.sidebar.active {
+    left: -250px; /* Sidebar moves out of view when inactive */
+}
+
+/* Toggle Button */
+.toggle-btn {
+    font-size: 24px;
+    cursor: pointer;
+    position: fixed;
+    top: 1px;
+    left: 50px; /* Positioned near the sidebar edge */
+    transform: translateX(-50%);
+    background-color: #1e4d7b;
+    color: white;
+    padding: 10px;
+    border-radius: 50%;
+    z-index: 1001; /* Ensures it stays above the sidebar */
+    transition: left 0.3s ease;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+}
+
+.toggle-btn:hover {
+    background-color: #14508c;
+}
+
+/* Adjust Toggle Button Position When Sidebar is Active */
+.sidebar.active + .toggle-btn {
+    left: 20px; /* Move toggle button to the left when sidebar is hidden */
+}
+
+/* Main Content Area */
+.main-content {
+    margin-left: 250px;
+    padding: 20px;
+    background-color: #fff;
+    border-radius: 10px;
+    box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.1);
+    transition: margin-left 0.3s ease; /* Smooth transition when sidebar toggles */
+}
+
+.sidebar.active ~ .main-content {
+    margin-left: 0; /* Main content moves when sidebar is hidden */
+}
+
+h1 {
+    font-size: 2.2rem;
+    margin-bottom: 1rem;
+    color: #1e4d7b;
+    text-shadow: 1px 1px 2px rgba(0,0,0,0.1);
+}
+
+p {
+    font-size: 1.2rem;
+    margin-bottom: 2rem;
+}
+
+/* Recent Activity and Orders Section */
+.recent-activity h3, .orders-preview h3 {
+    font-size: 1.5rem;
+    color: #333;
+    margin-bottom: 1rem;
+    border-bottom: 2px solid #1e4d7b;
+    padding-bottom: 10px;
+}
+
+/* Recent Activity List */
+#recentActivity {
+    list-style: none;
+    padding: 0;
+}
+
+#recentActivity li {
+    background-color: #f4f4f4;
+    margin: 10px 0;
+    padding: 15px;
+    border-left: 5px solid #1e4d7b;
+    border-radius: 4px;
+    font-size: 1.1rem;
+    transition: background-color 0.3s ease;
+}
+
+#recentActivity li:hover {
+    background-color: #e1ebf7;
+}
+
+/* Table Styling */
+table {
+    width: 100%;
+    border-collapse: collapse;
+    background-color: #f9f9f9;
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.05);
+}
+
+thead {
+    background-color: #1e4d7b;
+    color: white;
+    text-align: left;
+}
+
+thead th {
+    padding: 15px;
+    font-size: 1.1rem;
+    letter-spacing: 0.5px;
+}
+
+tbody tr {
+    border-bottom: 1px solid #ddd;
+}
+
+tbody tr:last-child {
+    border-bottom: none;
+}
+
+tbody td {
+    padding: 15px;
+    font-size: 1.1rem;
+}
+
+tbody tr:hover {
+    background-color: #e1ebf7;
+}
+
+tbody td {
+    text-align: left;  
+}
+
+/* Notifications Section */
+.notifications {
+    background-color: #fff;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.1);
+    margin-top: 20px;
+}
+
+.notifications h3 {
+    font-size: 1.5rem;
+    color: #333;
+    margin-bottom: 1rem;
+    border-bottom: 2px solid #1e4d7b;
+    padding-bottom: 10px;
+}
+
+.notifications ul {
+    list-style: none;
+    padding: 0;
+}
+
+.notifications ul li {
+    background-color: #f4f4f4;
+    margin: 10px 0;
+    padding: 15px;
+    border-left: 5px solid #1e4d7b;
+    border-radius: 4px;
+    font-size: 1.1rem;
+    transition: background-color 0.3s ease;
+}
+
+.notifications ul li:hover {
+    background-color: #e1ebf7;
+}
+
+/* User Profile Section */
+.user-profile {
+    background-color: #fff;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.1);
+    margin-top: 20px;
+}
+
+.user-profile h3 {
+    font-size: 1.5rem;
+    color: #333;
+    margin-bottom: 1rem;
+    border-bottom: 2px solid #1e4d7b;
+    padding-bottom: 10px;
+}
+
+.user-profile p {
+    font-size: 1.1rem;
+    margin-bottom: 0.5rem;
+}
+
+/* Responsiveness */
+@media (max-width: 768px) {
+    .toggle-btn {
+        left: 20px; /* Keep the toggle button accessible */
+    }
+
+    .main-content {
+        margin-left: 0; /* Adjust for smaller screens */
+        padding: 15px;
+    }
+
+    .sidebar {
+        width: 200px;
+    }
+
+    .sidebar h2 {
+        font-size: 1.6rem;
+    }
+
+    .sidebar ul li a {
+        font-size: 1.1rem;
+        padding: 8px 16px;
+    }
+    
+    /* Adjust toggle button position for smaller screens */
+    .toggle-btn {
+        top: 15px;
+    }
+}

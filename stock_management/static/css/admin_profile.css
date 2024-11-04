@@ -1,0 +1,143 @@
+/* Reset some default styles */
+body {
+    margin: 0;
+    font-family: 'Arial', sans-serif;
+    background-color: #f0f4f8; /* Light background color for a soft look */
+}
+
+/* Container styling */
+.container {
+    width: 90%;
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 20px;
+}
+
+/* Header styles */
+header {
+    background-color: #6C9BCF; /* Soft Blue */
+    color: white;
+    padding: 20px;
+    text-align: center;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+    border-radius: 8px; /* Rounded corners for elegance */
+}
+
+nav a {
+    color: #ffffff; /* White text for contrast */
+    margin: 0 15px;
+    text-decoration: none;
+    font-weight: bold;
+    transition: color 0.3s;
+}
+
+nav a:hover {
+    color: #FFD700; /* Gold for hover effect */
+}
+
+/* Main section styling */
+main {
+    margin-top: 20px;
+}
+
+/* Profile card styling */
+.profile-card {
+    background-color: #ffffff; /* Clean white background for the profile card */
+    border-radius: 12px;
+    box-shadow: 0 8px 15px rgba(0, 0, 0, 0.1);
+    padding: 30px;
+    text-align: center;
+}
+
+/* Profile header styling */
+.profile-header {
+    margin-bottom: 20px;
+}
+
+.profile-avatar {
+    width: 100px; /* Avatar size */
+    height: 100px;
+    border-radius: 50%;
+    border: 4px solid #6C9BCF; /* Avatar border color matching header */
+    margin-bottom: 10px;
+}
+
+/* Profile information */
+.profile-info {
+    margin-bottom: 20px;
+    text-align: left; /* Align text to the left */
+}
+
+.profile-info h3 {
+    color: #6C9BCF; /* Section header color */
+    margin-bottom: 10px;
+    font-size: 1.5em; /* Increased font size for prominence */
+}
+
+.profile-info p {
+    margin: 5px 0;
+}
+
+/* Buttons styling */
+.btn {
+    background-color: #6C9BCF; /* Soft blue for buttons */
+    color: white;
+    border: none;
+    border-radius: 8px;
+    padding: 12px 25px;
+    font-size: 16px;
+    cursor: pointer;
+    transition: background-color 0.3s, transform 0.2s;
+}
+
+.btn:hover {
+    background-color: #5A8BCF; /* Darker blue on hover */
+    transform: translateY(-2px); /* Lift effect */
+}
+
+/* Edit Profile and Change Password sections */
+.edit-profile {
+    display: flex;
+    justify-content: space-between;
+    margin: 20px 0;
+}
+
+/* Hidden sections styling */
+#editProfileSection,
+#changePasswordSection {
+    background-color: #E9F1F5; /* Light blue for editable sections */
+    padding: 20px;
+    border: 1px solid #6C9BCF; /* Border color matching the header */
+    border-radius: 8px;
+    margin-top: 20px;
+}
+
+/* Input styling */
+input[type="text"],
+input[type="password"] {
+    width: calc(100% - 20px); /* Full width minus padding */
+    padding: 10px;
+    margin-bottom: 10px;
+    border: 1px solid #6C9BCF; /* Input border color */
+    border-radius: 5px;
+    transition: border-color 0.3s;
+}
+
+input[type="text"]:focus,
+input[type="password"]:focus {
+    border-color: #5A8BCF; /* Focus color */
+    outline: none; /* Remove default outline */
+}
+
+/* Footer styling */
+footer {
+    text-align: center;
+    padding: 15px 0;
+    background-color: #6C9BCF; /* Match footer with header */
+    color: white;
+    border-radius: 8px; /* Rounded corners for footer */
+    position: relative; /* Position for sticky footer */
+    bottom: 0;
+    width: 100%;
+    margin-top: 20px; /* Space above footer */
+}

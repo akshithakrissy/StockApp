@@ -1,0 +1,78 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{% static 'css/view_stock.css' %}">
+    <title>View Stock</title>
+</head>
+<body>
+    <h1>View Stock</h1>
+
+    {% if categorized_stocks %}
+        {% for category, stocks in categorized_stocks.items %}
+            <div class="category">{{ category }}</div>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Stock Name</th>
+                        <th>Quantity</th>
+                        <th>Price</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for stock in stocks %}
+                    <tr>
+                        <td>{{ stock.name }}</td>
+                        <td>{{ stock.quantity }}</td>
+                        <td>${{ stock.price|floatformat:2 }}</td>
+                        <td>
+                            <button class="button" onclick="restockItem('{{ stock.name|escapejs }}')">Restock</button>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+            <br>
+        {% endfor %}
+    {% else %}
+        <p>No stock available.</p>
+    {% endif %}
+
+    <a class="button back-button" href="{% url 'admin_dashboard' %}">Back to Dashboard</a>
+
+    <script>
+        function restockItem(name) {
+            const quantity = prompt(`Enter quantity to restock ${name}:`);
+            if (quantity && !isNaN(quantity)) {
+                fetch('/restock-stock/', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'X-CSRFToken': '{{ csrf_token }}',  // Include CSRF token for protection
+                    },
+                    body: JSON.stringify({
+                        stock_name: name,
+                        quantity: quantity,
+                    }),
+                })
+                .then(response => {
+                    if (response.ok) {
+                        alert(`Restocked ${quantity} of ${name}`);
+                        location.reload(); // Refresh the page to show updated stock
+                    } else {
+                        alert('Failed to restock. Please try again.');
+                    }
+                })
+                .catch(error => {
+                    alert('An error occurred: ' + error.message);
+                });
+            } else {
+                alert('Please enter a valid quantity.');
+            }
+        }
+    </script>
+</body>
+</html>

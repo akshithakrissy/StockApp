@@ -1,0 +1,65 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Feedback</title>
+    <link rel="stylesheet" href="{% static 'css/feedback.css' %}">
+</head>
+<body>
+    <div class="feedback-container">
+        <h1>We Value Your Feedback</h1>
+        <p>Let us know your thoughts about our service.</p>
+
+        <!-- Display Success Message -->
+        {% if messages %}
+            <div class="message-box">
+                {% for message in messages %}
+                    <div class="alert alert-success">{{ message }}</div>
+                {% endfor %}
+            </div>
+        {% endif %}
+
+        <div class="feedback-card">
+            <form method="POST">
+                {% csrf_token %}
+                
+                <!-- Feedback with Character Counter -->
+                <label for="feedback">Your Feedback:</label>
+                <textarea id="feedback" name="feedback" maxlength="500" placeholder="Type your feedback here..." oninput="updateCharCount()" required></textarea>
+                <div class="char-counter">
+                    <span id="charCount">0</span>/500 characters
+                </div>
+
+                <!-- Star Rating System -->
+                <div class="rating">
+                    <span>Please rate us:</span>
+                    <div class="stars">
+                        <input type="radio" name="star" id="star5" value="5"><label for="star5">&#9733;</label>
+                        <input type="radio" name="star" id="star4" value="4"><label for="star4">&#9733;</label>
+                        <input type="radio" name="star" id="star3" value="3"><label for="star3">&#9733;</label>
+                        <input type="radio" name="star" id="star2" value="2"><label for="star2">&#9733;</label>
+                        <input type="radio" name="star" id="star1" value="1"><label for="star1">&#9733;</label>
+                    </div>
+                </div>
+
+                <!-- Animated Submit Button -->
+                <button type="submit" class="submit-btn">
+                    Submit Feedback
+                </button>
+            </form>
+            <a href="{% url 'house' %}" class="back-link">Back to Dashboard</a>
+        </div>
+    </div>
+
+    <!-- JavaScript to Update Character Counter -->
+    <script>
+        function updateCharCount() {
+            let feedback = document.getElementById('feedback');
+            let charCount = document.getElementById('charCount');
+            charCount.innerText = feedback.value.length;
+        }
+    </script>
+</body>
+</html>

@@ -1,0 +1,88 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Buy Stocks</title>
+    <link rel="stylesheet" href="{% static 'css/orders.css' %}">
+</head>
+<body>
+    <div class="container">
+        <h1>Available Stocks</h1>
+
+        <!-- Available Stocks List -->
+        <div class="stocks-list">
+            {% if stocks %}
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Stock</th>
+                            <th>Price</th>
+                            <th>Quantity</th>
+                            <th>Action</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for stock in stocks %}
+                            <tr>
+                                <td>{{ stock.name }}</td>
+                                <td>${{ stock.price }}</td>
+                                <td>{{ stock.quantity }}</td>
+                                <td>
+                                    <button class="buy-btn" onclick="openBuyModal('{{ stock.id }}')">Buy</button>
+                                </td>
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            {% else %}
+                <p>No stocks available at the moment.</p>
+            {% endif %}
+        </div>
+
+        <!-- Buy Stock Modal -->
+        <div id="buyModal" class="modal">
+            <div class="modal-content">
+                <span class="close-btn" onclick="closeModal('buyModal')">&times;</span>
+                <h2>Buy Stock</h2>
+                <form id="buyForm">
+                    <input type="hidden" id="buyStockId">
+                    <label for="buyQuantity">Quantity:</label>
+                    <input type="number" id="buyQuantity" min="1" placeholder="Enter quantity">
+                    <button type="submit" class="buy-stock-btn">Proceed to Payment</button>
+                </form>
+                <p id="buyFeedback"></p>
+            </div>
+        </div>
+
+        <a href="{% url 'house' %}" class="back-btn">Back to Dashboard</a>
+    </div>
+
+    <!-- JavaScript for Modal and Buy Logic -->
+    <script>
+        function openBuyModal(stockId) {
+            document.getElementById('buyStockId').value = stockId;
+            document.getElementById('buyModal').style.display = 'block';
+        }
+
+        function closeModal(modalId) {
+            document.getElementById(modalId).style.display = 'none';
+        }
+
+        // Buy Stock Form Submission with Redirect
+        document.getElementById('buyForm').onsubmit = function(event) {
+            event.preventDefault();
+            let stockId = document.getElementById('buyStockId').value;
+            let quantity = document.getElementById('buyQuantity').value;
+
+            if (quantity > 0) {
+                // Redirect to payment page with stockId and quantity as query parameters
+                window.location.href = `{% url 'payment' %}?stock_id=${stockId}&quantity=${quantity}`;
+            } else {
+                document.getElementById('buyFeedback').innerText = 'Invalid quantity!';
+            }
+        };
+    </script>
+</body>
+</html>
